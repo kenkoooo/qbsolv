@@ -16,32 +16,6 @@
 #include "extern.h"
 #include "include.h"
 
-// This function Simply evaluates the objective function for a given solution.
-//  call this to double check that a solution = energy
-// @param solution a current solution
-// @param qubo_size the number of variables in the QUBO matrix
-// @param qubo the QUBO matrix being solved
-// @returns Energy of solution evaluated by qubo
-double Simple_evaluate(int8_t *solution, uint qubo_size, double **qubo) {
-  double result = 0.0;
-
-  for (uint ii = 0; ii < qubo_size; ii++) {
-    double row_sum = 0.0;
-    double col_sum = 0.0;
-
-    // qubo an upper triangular matrix, so start right of the diagonal
-    // for the rows, and stop at the diagonal for the columns
-    for (uint jj = ii + 1; jj < qubo_size; jj++)
-      row_sum += qubo[ii][jj] * (double)solution[jj];
-
-    for (uint jj = 0; jj < ii; jj++)
-      col_sum += qubo[jj][ii] * (double)solution[jj];
-
-    if (solution[ii] == 1) result += row_sum + qubo[ii][ii];
-  }
-
-  return result;
-}
 // This function evaluates the objective function for a given solution.
 //
 // It is called when the search is starting over, such as after a projection
